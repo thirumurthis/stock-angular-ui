@@ -1,0 +1,13 @@
+<mat-card>
+    <mat-card-title>Notification</mat-card-title>
+    <mat-card-subtitle>The notification status for the logged in user</mat-card-subtitle>
+    <mat-card-content>
+        <div *ngIf="msg.apiKey"><p>API KEY: {{msg.apiKey}}</p></div>
+        <div *ngIf="msg.userId"><p>USER ID: {{msg.userId}}</p></div>
+        <div *ngIf="msg.statusMessage"><p>STATUS MESSAGE: {{msg.statusMessage}}</p></div>
+        <div *ngIf="msg.status"><p>MESSAGE: {{msg.status}}</p></div>
+    </mat-card-content>
+    <mat-card-actions>
+        <button mat-raised-button color="primary" (click)="getStocks()"> View Stocks </button>
+    </mat-card-actions>
+</mat-card>

@@ -1,0 +1,31 @@
+.alert-danger {
+    background-color: #f44336; /* Red */
+}
+.alert-success {
+    background-color: #36f456;  
+} 
+.alert{
+    padding: 20px;
+    color: white;
+    margin-bottom: 15px;
+    text-align: center;
+}
+
+section div:nth-child(1), section div:nth-child(2){
+    color: grey;
+    font-size: 15px;
+}
+
+section div:nth-child(1){
+    margin-top: 15px;
+}
+
+mat-card {
+    max-width: 400px;
+    margin: 2em auto;
+    text-align: center;
+  }
+  
+  mat-form-field {
+    display: block;
+  }

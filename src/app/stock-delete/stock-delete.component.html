@@ -1,0 +1,18 @@
+<mat-card class="mat-elevation-z4">
+    <mat-card-title>Delete Stock</mat-card-title>
+    <mat-card-subtitle>This form will delete the stock Symbol if it exists in the system</mat-card-subtitle>
+    <mat-card-content>
+      <form #loginForm="ngForm" (ngSubmit)="onSubmit()">
+        <mat-error *ngIf="!validInput">
+          The stock symbol might be incorrect
+        </mat-error>
+        <mat-form-field>
+          <input matInput placeholder="Symbol" [(ngModel)]="sybmol" name="symbol" required>
+          <mat-error>
+            Please provide the Symbol of stock
+          </mat-error>
+        </mat-form-field>
+            <button mat-raised-button color="primary" [disabled]="!loginForm.form.valid"> Delete Stock </button>
+      </form>
+    </mat-card-content>
+  </mat-card>

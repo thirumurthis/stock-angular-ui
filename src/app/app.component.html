@@ -1,0 +1,19 @@
+<mat-drawer-container class="container" autosize>
+    <mat-drawer #drawer class="sidenav">
+        <button routerLink="/login" color="primary" mat-button>Login</button>
+        <button routerLink="/info" color="primary" mat-button>Sample View</button>
+    </mat-drawer>
+    <div class="sidenav-content">
+        <mat-toolbar color="primary">
+            <mat-toolbar-row>
+                <button mat-icon-button (click)="drawer.toggle()">
+                    <mat-icon>menu</mat-icon>
+                </button>
+                <span>Stock App</span>
+                <span class="spacer"></span>
+                <mat-icon>help</mat-icon>
+            </mat-toolbar-row>
+        </mat-toolbar>
+        <router-outlet></router-outlet>
+    </div>
+</mat-drawer-container>

@@ -1,0 +1,26 @@
+section div:nth-child(1), section div:nth-child(3){
+    color: grey;
+    font-size: 15px;
+}
+
+section div:nth-child(1){
+    margin-top: 15px;
+}
+
+section div:nth-child(2){
+    width: 50%;
+}
+
+.alert-danger {
+    background-color: #f44336; /* Red */
+}
+
+mat-card {
+    max-width: 400px;
+    margin: 2em auto;
+    text-align: center;
+  }
+  
+  mat-form-field {
+    display: block;
+  }
