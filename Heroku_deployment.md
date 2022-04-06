@@ -1,6 +1,6 @@
 ### Change done in order to deploy to heroku.
 
-- installed the `npm install express --save` issue this comman from where the root angular dirctory is created.
+- installed the `npm install express --save` issue this command from where the root angular directory is created.
 - The above will update the package.json and lock version of it.
 
 - In the `server.js` we are routing the http to https traffic.
