@@ -1,16 +1,16 @@
-import { catchError, throwError } from 'rxjs';
+import { catchError, throwError, Subscription, subscribeOn } from 'rxjs';
 import { Signupresponse } from './../signupresponse';
 import { ErrorHandlerService } from './../shared/error-handler.service';
 import { LoginService } from './../login.service';
 import { Router } from '@angular/router';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 
 @Component({
   selector: 'app-stock-delete',
   templateUrl: './stock-delete.component.html',
   styleUrls: ['./stock-delete.component.css']
 })
-export class StockDeleteComponent implements OnInit {
+export class StockDeleteComponent implements OnInit, OnDestroy {
 
   public sybmol : any = "";
   public validInput : boolean = true;
@@ -18,6 +18,9 @@ export class StockDeleteComponent implements OnInit {
   public apiKey : any ="";
   public jwtToken: any = "";
   public signupResponse: Signupresponse = new Signupresponse("","","");
+
+  private subForToken : Subscription = new Subscription();
+  private subForDStock : Subscription = new Subscription();
 
   constructor(protected router : Router, 
               protected loginService: LoginService,
@@ -32,6 +35,10 @@ export class StockDeleteComponent implements OnInit {
     }
     debugger
     this.getToken({"userName":this.userId,"apiKey":this.apiKey});
+  }
+  ngOnDestroy(): void {
+    this.subForDStock.unsubscribe();
+    this.subForToken.unsubscribe();
   }
 
   ngOnInit(): void {
@@ -55,7 +62,6 @@ export class StockDeleteComponent implements OnInit {
 
   onSubmit(){
     let model = {"userName":this.userId,"apiKey":this.apiKey,"jwtToken":this.jwtToken,"symbol":this.sybmol};
-    debugger
     this.loginService.deleteStock(model).pipe(
       catchError(err => {
         //console.log('Handling error locally and rethrowing it...', err);
@@ -72,4 +78,9 @@ export class StockDeleteComponent implements OnInit {
           }
       })
   }
+
+  backToStockInfo(){
+    this.router.navigate(['/stock-info']);
+  }
+
 }

@@ -1,17 +1,18 @@
 import { StockInfo } from './../data/stock-info';
 import { Signupresponse } from './../signupresponse';
-import { throwError, catchError } from 'rxjs';
+import { throwError, catchError, Subscription } from 'rxjs';
 import { ErrorHandlerService } from './../shared/error-handler.service';
 import { LoginService } from './../login.service';
 import { Router } from '@angular/router';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
+import {TooltipPosition} from '@angular/material/tooltip';
 
 @Component({
   selector: 'app-stock-input',
   templateUrl: './stock-input.component.html',
   styleUrls: ['./stock-input.component.css']
 })
-export class StockInputComponent implements OnInit {
+export class StockInputComponent implements OnInit, OnDestroy {
 
   validInput : boolean = true;
   public sybmol : string = "";
@@ -22,6 +23,11 @@ export class StockInputComponent implements OnInit {
   public jwtToken: any = "";
   public stockAddEvent: boolean=true;
   public signupResponse: Signupresponse = new Signupresponse("","","");
+
+  private subForToken : Subscription = new Subscription();
+  private subForApi : Subscription = new Subscription();
+  private subForAStock : Subscription = new Subscription();
+  private subForUStock : Subscription = new Subscription();
 
   constructor(private router: Router,
               private loginService : LoginService, 
@@ -37,10 +43,16 @@ export class StockInputComponent implements OnInit {
     }
     this.getToken({"userName":this.userId,"apiKey":this.apiKey});
   }
+  ngOnDestroy(): void {
+     this.subForAStock.unsubscribe();
+     this.subForUStock.unsubscribe();
+     this.subForApi.unsubscribe();
+     this.subForToken.unsubscribe();
+  }
 
   ngOnInit(): void {
 
-    console.log("init- invoked the stock route")
+    //console.log("init- invoked the stock route")
     if(!this.jwtToken || this.jwtToken ===''){
       this.jwtToken = sessionStorage.getItem("jwt");
     } 
@@ -56,7 +68,7 @@ export class StockInputComponent implements OnInit {
     }
     let model = {"userName":this.userId,"apiKey":this.apiKey,"jwtToken":this.jwtToken,"symbol":this.sybmol,"stockCount":this.stockCount,"avgStockPrice":this.avgStockPrice};
     if(this.stockAddEvent){
-      this.loginService.addStock(model).pipe(
+      this.subForAStock = this.loginService.addStock(model).pipe(
       catchError(err => {
         //console.log('Handling error locally and rethrowing it...', err);
         this.errorHandler.handleError(err);
@@ -64,17 +76,17 @@ export class StockInputComponent implements OnInit {
       }))
       .subscribe(
          response => {
-        console.log(" MESSAGE FROM the add stock flow:- "+response);
+        //console.log(" MESSAGE FROM the add stock flow:- "+response);
         if(response.status === "Successfully added stock"
         || response.status === "Stock info already exists in DB."){
-          console.log("to invoke the stock-info flow")
+          //console.log("to invoke the stock-info flow")
           this.router.navigate(['stock-info'],{state:{msg:response.status}})
         }else{
           this.router.navigate(['alert'])
         }
       })
     }else{
-      this.loginService.updateStock(model)
+      this.subForUStock = this.loginService.updateStock(model)
       .pipe(
         catchError(err => {
           //console.log('Handling error locally and rethrowing it...', err);
@@ -88,8 +100,12 @@ export class StockInputComponent implements OnInit {
       }
   }
 
+  backToStockInfo(){
+    this.router.navigate(['/stock-info']);
+  }
+
   getToken(model:any){
-    this.loginService.getToken(model).pipe(
+    this.subForToken = this.loginService.getToken(model).pipe(
       catchError(err => {
         //console.log('Handling error locally and rethrowing it...', err);
         this.errorHandler.handleError(err);
@@ -97,10 +113,10 @@ export class StockInputComponent implements OnInit {
       })
     ).subscribe(
       response => {
-        console.log(response);
+        //console.log(response);
         this.signupResponse = new Signupresponse(response.statusMessage, response.apiKey, response.userId);
         this.signupResponse.setsStatusAndToken(response.status,response.jwtToken);
-        console.log(response.jwtToken);
+        //console.log(response.jwtToken);
       })
   }
 
@@ -112,6 +128,7 @@ export class StockInputComponent implements OnInit {
       this.stockAddEvent = false;
     }
   }
+
   /*
   getApiDetails(model: any){
     this.loginService.getApiKey(model).pipe(
