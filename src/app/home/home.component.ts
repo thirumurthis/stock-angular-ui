@@ -1,16 +1,16 @@
-import { throwError, catchError } from 'rxjs';
+import { throwError, catchError, Subscription } from 'rxjs';
 import { ErrorHandlerService } from './../shared/error-handler.service';
 import { LoginService } from './../login.service';
 import { Signupresponse } from './../signupresponse';
 import { Router } from '@angular/router';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.css']
 })
-export class HomeComponent implements OnInit {
+export class HomeComponent implements OnInit, OnDestroy {
 
   public response : any = null;
   public msg : Signupresponse = new Signupresponse("","","");
@@ -18,14 +18,18 @@ export class HomeComponent implements OnInit {
   public userId : any = "";
   public jwtToken : any = "";
 
-  constructor(private router: Router, protected loginService : LoginService, private errorHandler: ErrorHandlerService ) { 
+  private subScription : Subscription = new Subscription();
+
+  constructor(private router: Router,
+              protected loginService : LoginService, 
+              private errorHandler: ErrorHandlerService ) { 
     //console.log(this.router.getCurrentNavigation()?.extras.state);
     this.response = this.router.getCurrentNavigation()?.extras.state;
     this.msg = this.response.msg
     if(this.response != null ){
-      console.log("construct:- "+this.response.msg);
+      //console.log("construct:- "+this.response.msg);
      this.userId = this.checkAndSetSessionAndLocalStorage(this.response.msg)
-     console.log("set session storage:- "+this.userId);
+     //console.log("set session storage:- "+this.userId);
      sessionStorage.setItem("userId",this.userId);
     }
     
@@ -39,9 +43,14 @@ export class HomeComponent implements OnInit {
     }
     this.getToken({"userName":this.userId,"apiKey":this.apiKey});
   }
+  ngOnDestroy(): void {
+    if(this.subScription){
+      this.subScription.unsubscribe();
+    }
+  }
 
   ngOnInit(): void {
-    console.log(this.msg.apiKey);
+    //console.log(this.msg.apiKey);
     //set the user id to session storage
     if(this.userId!=null){
       sessionStorage.setItem("userId",this.userId);
@@ -50,13 +59,13 @@ export class HomeComponent implements OnInit {
     this.userId = this.getUserIdFromSessionStorage();
     this.apiKey = this.getAPIKeyFromLocalStorage();
     // use that to fetch the api key
-    console.log(this.userId +", "+this.apiKey);
+    //console.log(this.userId +", "+this.apiKey);
     this.getToken({"userName":this.userId,"apiKey":this.apiKey});
 
   }
 
   private checkAndSetSessionAndLocalStorage(responseInfo : Signupresponse) : string|null {
-    console.log("in check method:= "+responseInfo)
+    //console.log("in check method:= "+responseInfo)
     if(responseInfo == null){
       return null;
     }
@@ -64,9 +73,9 @@ export class HomeComponent implements OnInit {
     this.msg = responseInfo;
     this.apiKey = this.msg.apiKey;
     this.userId = this.msg.userId;
-    console.log("in check method u "+this.userId+" and api "+this.apiKey);
+    //console.log("in check method u "+this.userId+" and api "+this.apiKey);
     if(sessionStorage.getItem("userId") == null){
-      console.log("came to this part");
+      //console.log("came to this part");
       sessionStorage.setItem("userId",this.userId);
       localStorage.setItem(this.userId,this.apiKey);
     }
@@ -90,7 +99,7 @@ export class HomeComponent implements OnInit {
   }
 
   getToken(model:any){
-    this.loginService.getToken(model).pipe(
+   this.subScription= this.loginService.getToken(model).pipe(
       catchError(err => {
         //console.log('Handling error locally and rethrowing it...', err);
         this.errorHandler.handleError(err);

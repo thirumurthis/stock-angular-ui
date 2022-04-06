@@ -1,21 +1,21 @@
 <mat-card>
     <mat-card-header>
         <mat-card-title-group>
-    <mat-card-title>
-           Stock Details 
-      </mat-card-title>
-    <mat-card-subtitle>The amount invested in stocks and current pricing status</mat-card-subtitle>
-</mat-card-title-group>
-<div fxFlex></div>
-      <button mat-stroked-button color="primary" matTooltip="Click to add stock" (click)="addStockPath()"> Add Stock </button>
-      <button mat-stroked-button color="primary" matTooltip="Click to delete stock" (click)="deleteStock()"> Delete Stock </button>
-</mat-card-header>
+            <mat-card-title>
+                Stock Details
+            </mat-card-title>
+            <mat-card-subtitle>The amount invested in stocks and current pricing status</mat-card-subtitle>
+        </mat-card-title-group>
+        <div fxFlex></div>
+        <button mat-stroked-button color="primary" matTooltip="Click to add stock" (click)="addStockPath()"> Add Stock </button>
+        <button mat-stroked-button color="primary" matTooltip="Click to delete stock" (click)="deleteStock()"> Delete Stock </button>
+    </mat-card-header>
     <mat-card-content>
         <div *ngIf="">
-        <mat-error>
-            No stocks found in the system.
-        </mat-error>
-      </div>
+            <mat-error>
+                No stocks found in the system.
+            </mat-error>
+        </div>
         <div class="mat-elevation-z4">
             <table mat-table [dataSource]="this.dataSource" matSort multiTemplateDataRows matSortActive="symbol"
                 matSortDirection="asc">
@@ -27,12 +27,14 @@
                             <td mat-cell *matCellDef="let element"> {{element[displayedColumn] | currency}} </td>
                         </ng-template>
                         <ng-template [ngIf]="displayedColumn === 'lastAccessed'">
-                            <td mat-cell *matCellDef="let element"> {{element[displayedColumn] | date:'MM-dd-yy hh:mm'}} </td>
+                            <td mat-cell *matCellDef="let element"> {{element[displayedColumn] | date:'MM-dd-yy hh:mm'}}
+                            </td>
                         </ng-template>
                         <ng-template [ngIf]="!(  displayedColumn === 'currentPrice' || displayedColumn === 'currentInvestedAmount'
                                 || displayedColumn ===  'actualInvestedAmount' ||displayedColumn === 'difference' 
                                 || displayedColumn === 'lastAccessed')">
-                            <td mat-cell *matCellDef="let element"> {{element[displayedColumn].replace('** ','').replace(' **','')}} </td>
+                            <td mat-cell *matCellDef="let element"> {{element[displayedColumn].replace('**
+                                ','').replace(' **','')}} </td>
                         </ng-template>
                     </ng-container>
                 </div>
@@ -50,16 +52,16 @@
             <table>
                 <!--class="mat-sort-header mat-header-cell cdk-header-cell ng-tns-c24-3 cdk-column-currentPrice mat-column-currentPrice ng-star-inserted mat-table-sticky mat-table-sticky-border-elem-top"-->
                 <tr class="mat-sort-header mat-header-cell tbl-header">
-                    <td >Invested Amount</td>
-                    <td >Current Market Value</td>
-                    <td >Difference</td>
-                    <td >Profit/Loss</td>
+                    <td>Invested Amount</td>
+                    <td>Current Market Value</td>
+                    <td>Difference</td>
+                    <td>Profit/Loss</td>
                 </tr>
                 <tr class="mat-cell tbl-row">
-                    <td >{{stocks.investedAmount | currency}}</td>
-                    <td >{{stocks.currentMarketTotalAmount | currency}}</td>
-                    <td >{{stocks.difference | currency}}</td>
-                    <td >{{stocks.profitLossStatus.replace('**','').replace('**','')}}</td>
+                    <td>{{stocks.investedAmount | currency}}</td>
+                    <td>{{stocks.currentMarketTotalAmount | currency}}</td>
+                    <td>{{stocks.difference | currency}}</td>
+                    <td>{{stocks.profitLossStatus.replace('**','').replace('**','')}}</td>
                 </tr>
             </table>
         </div>

@@ -2,18 +2,17 @@ import { StockDetails } from './../data/stock-details';
 import { Router } from '@angular/router';
 import { StockInfo } from './../data/stock-info';
 import { InfoService } from './../info.service';
-import { Component, OnInit, ViewChild } from '@angular/core';
-import { catchError, throwError,map } from 'rxjs';
+import { Component, OnInit, ViewChild, OnDestroy } from '@angular/core';
+import { catchError, throwError, map, Subscription } from 'rxjs';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
-import { MatPaginator} from '@angular/material/paginator';
 
 @Component({
   selector: 'app-info',
   templateUrl: './info.component.html',
   styleUrls: ['./info.component.css']
 })
-export class InfoComponent implements OnInit {
+export class InfoComponent implements OnInit, OnDestroy {
 
   public stocks : StockInfo = new StockInfo();
   
@@ -33,7 +32,13 @@ export class InfoComponent implements OnInit {
   // create the table only for hte stock info details
   //dataSource : any = {};
   public dataSource: MatTableDataSource<StockDetails> = new MatTableDataSource();
+
+  private subForInfo : Subscription = new Subscription();
   constructor(private infoservice : InfoService,private router: Router) { }
+
+  ngOnDestroy(): void {
+    this.subForInfo.unsubscribe();
+  }
 
   //@ViewChild(MatPaginator, {static: true}) paginator: MatPaginator = new MatPaginator( new MatPaginatorIntl());
   @ViewChild(MatSort, {static: true}) sort: MatSort = new MatSort();
@@ -41,19 +46,15 @@ export class InfoComponent implements OnInit {
  // @ViewChild(MatSort) sort: MatSort = new MatSort();
   ngOnInit(): void {
     this.getSampleStockInfo();
-    //console.log("DATA from backend"+this.stocks.stockInfo)
-    //console.log(this.dataSource.data)
-    //this.dataSource.sort = this.sort;
   }
 
   getSampleStockInfo (){
-
-    console.log("invoke info endpoint");
-    this.infoservice.getAppInfo().pipe(
+    //console.log("invoke info endpoint");
+    this.subForInfo = this.infoservice.getAppInfo().pipe(
       map(res => Object.assign(new StockInfo(),res))
     ).subscribe(
       (response : StockInfo)  => {
-        console.log(response);
+        //console.log(response);
         this.stocks = response;
         this.dataSource = new MatTableDataSource(this.stocks.stockInfo);
         this.dataSource.sort = this.sort;
@@ -61,6 +62,10 @@ export class InfoComponent implements OnInit {
         //this.router.navigate(['/info'],{state :{stocks:this.stocks}});
       }
     )
+  }
+
+  backToLogin(){
+    this.router.navigate(['/login']);
   }
 
 }

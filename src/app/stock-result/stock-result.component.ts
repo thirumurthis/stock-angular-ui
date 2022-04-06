@@ -1,11 +1,11 @@
 import { StockInfo } from './../data/stock-info';
 import { MatTableDataSource } from '@angular/material/table';
 import { ErrorHandlerService } from './../shared/error-handler.service';
-import { catchError, throwError, Observable, map } from 'rxjs';
+import { catchError, throwError, Observable, map, Subscription } from 'rxjs';
 import { Signupresponse } from './../signupresponse';
 import { LoginService } from './../login.service';
 import { Router } from '@angular/router';
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, OnDestroy } from '@angular/core';
 import { StockDetails } from '../data/stock-details';
 import { MatSort } from '@angular/material/sort';
 import { MatSnackBar } from '@angular/material/snack-bar';
@@ -15,13 +15,16 @@ import { MatSnackBar } from '@angular/material/snack-bar';
   templateUrl: './stock-result.component.html',
   styleUrls: ['./stock-result.component.css']
 })
-export class StockResultComponent implements OnInit {
+export class StockResultComponent implements OnInit, OnDestroy {
 
   public apiKey : any ="";
   public userId : any ="";
   public jwtToken : any ="";
   public signupResponse: Signupresponse = new Signupresponse("","","");
   public msg: any = "";
+  private tokenSub : Subscription = new Subscription();
+  private apiSub : Subscription = new Subscription();
+  private stockSub : Subscription = new Subscription();
 
   displayedColumns:string[] = ["symbol","companyName","currentPrice","currentInvestedAmount","actualInvestedAmount","difference","profitOrLoss","lastAccessed"]
 
@@ -44,13 +47,17 @@ export class StockResultComponent implements OnInit {
     }
     this.getToken({"userName":this.userId,"apiKey":this.apiKey});
   }
-
+  ngOnDestroy(): void {
+    this.tokenSub.unsubscribe();
+    this.apiSub.unsubscribe();
+    this.stockSub.unsubscribe();
+  }
 
   @ViewChild(MatSort, {static: true}) sort: MatSort = new MatSort();
 
   ngOnInit(): void {
 
-    console.log("init- invoked the stock route")
+    //console.log("init- invoked the stock route")
     this.userId = sessionStorage.getItem("userId");
     if(this.userId){
       this.apiKey = localStorage.getItem(this.userId);
@@ -63,8 +70,8 @@ export class StockResultComponent implements OnInit {
   }
 
   getToken(model:any){
-    debugger;
-    this.loginService.getToken(model).pipe(
+//    debugger;
+    this.tokenSub = this.loginService.getToken(model).pipe(
       catchError(err => {
         //console.log('Handling error locally and rethrowing it...', err);
         this.errorHandler.handleError(err);
@@ -72,7 +79,7 @@ export class StockResultComponent implements OnInit {
       })
     ).subscribe(
       response => {
-        console.log("response from token:- "+response);
+       // console.log("response from token:- "+response);
         this.signupResponse = new Signupresponse(response.statusMessage, response.apiKey, response.userId);
         this.signupResponse.setsStatusAndToken(response.status,response.jwtToken);
         this.jwtToken=response.jwtToken;
@@ -80,7 +87,7 @@ export class StockResultComponent implements OnInit {
       })
   }
   getApiDetails(model: any){
-    this.loginService.getApiKey(model).pipe(
+   this.apiSub = this.loginService.getApiKey(model).pipe(
           catchError(err => {
             //console.log('Handling error locally and rethrowing it...', err);
             this.errorHandler.handleError(err);
@@ -88,25 +95,25 @@ export class StockResultComponent implements OnInit {
           })
         ).subscribe(
           response => {
-            console.log(response);
+            //console.log(response);
             this.signupResponse = new Signupresponse(response.statusMessage, response.apiKey, response.userId);
             this.signupResponse.setsStatusAndToken(response.status,response.jwtToken);
-            console.log(response.jwtToken);
+            //console.log(response.jwtToken);
           })
   }
 
   getStockDetails(model:any){
-    console.log(model)
-      this.loginService.getStockInfo(model).pipe(
+    //console.log(model)
+     this.stockSub = this.loginService.getStockInfo(model).pipe(
       map(res => Object.assign(new StockInfo(),res))
     ).subscribe(
       (response : StockInfo)  => {
-        console.log(response);
+       // console.log(response);
         this.stocks = response;
         
         this.dataSource = new MatTableDataSource(this.stocks.stockInfo);
         this.dataSource.sort = this.sort;
-        debugger
+        //debugger
       }
     )
   }
