@@ -1,6 +1,6 @@
 import { ErrorHandlerService } from './../shared/error-handler.service';
 import { AlertserviceService } from './../alertservice.service';
-import { catchError, ignoreElements, throwError } from 'rxjs';
+import { catchError, ignoreElements, throwError, Subscription } from 'rxjs';
 import { Signupresponse } from './../signupresponse';
 import { LoginService } from './../login.service';
 import { Component, OnDestroy, OnInit } from '@angular/core';
@@ -23,6 +23,9 @@ export class LoginComponent implements OnInit {
   private signup: boolean = false;
   private apiKey : any ="";
   private userId : any ="";
+  private subForLogin : Subscription = new Subscription();
+  private subForSignup : Subscription = new Subscription();
+  private subForApi : Subscription = new Subscription();
 
   model: any = {};
   constructor(private router: Router, private loginService: LoginService, private errorHandler: ErrorHandlerService) {
@@ -38,7 +41,7 @@ export class LoginComponent implements OnInit {
 
     this.model = { "userName": this.username, "password": this.password };
     if (this.signup) {
-      this.loginService.signup(this.model)
+      this.subForSignup = this.loginService.signup(this.model)
         .pipe(
           catchError(err => {
             //console.log('Handling error locally and rethrowing it...', err);
@@ -47,7 +50,7 @@ export class LoginComponent implements OnInit {
           })
         ).subscribe(
           response => {
-            console.log(response);
+            //console.log(response);
             this.singupResponse = new Signupresponse(response.statusMessage, response.apiKey, response.userId);
             if (response.statusMessage != "") {
               this.router.navigate(['/home'], { state: { msg: this.singupResponse } });
@@ -58,8 +61,8 @@ export class LoginComponent implements OnInit {
           })
     } else if (this.api) {
       //debugger
-      console.log("invoked to get apikey")
-      this.loginService.getApiKey(this.model)
+      //console.log("invoked to get apikey")
+      this.subForApi = this.loginService.getApiKey(this.model)
         .pipe(
           catchError(err => {
             //console.log('Handling error locally and rethrowing it...', err);
@@ -68,10 +71,10 @@ export class LoginComponent implements OnInit {
           })
         ).subscribe(
           response => {
-            console.log(response);
+            //console.log(response);
             this.singupResponse = new Signupresponse(response.statusMessage, response.apiKey, response.userId);
             this.singupResponse.setsStatusAndToken(response.status, response.jwtToken);
-            console.log(response.jwtToken);
+            //console.log(response.jwtToken);
             if (response.statusMessage != "") {
               this.router.navigate(['/home'], { state: { msg: this.singupResponse } });
             } else {
@@ -81,8 +84,8 @@ export class LoginComponent implements OnInit {
           })
     } else if (this.login) {
       //debugger
-      console.log("invoked to get apikey")
-      this.loginService.getApiKey(this.model)
+      //console.log("invoked to get apikey")
+     this.subForLogin = this.loginService.getApiKey(this.model)
         .pipe(
           catchError(err => {
             //console.log('Handling error locally and rethrowing it...', err);
@@ -91,10 +94,10 @@ export class LoginComponent implements OnInit {
           })
         ).subscribe(
           response => {
-            console.log(response);
+            //console.log(response);
             this.singupResponse = new Signupresponse(response.statusMessage, response.apiKey, response.userId);
             this.singupResponse.setsStatusAndToken(response.status, response.jwtToken);
-            console.log(response.jwtToken);
+            //console.log(response.jwtToken);
             if (response.jwtToken != null) {
               this.loginValid = true;
               this.checkAndSetSessionAndLocalStorage(this.singupResponse);
@@ -123,17 +126,17 @@ export class LoginComponent implements OnInit {
   }
 
   private checkAndSetSessionAndLocalStorage(responseInfo : Signupresponse) : string|null {
-    console.log("in check method:= "+responseInfo)
+    //console.log("in check method:= "+responseInfo)
     if(responseInfo == null){
       return null;
     }
-    debugger
+    //debugger
     this.singupResponse = responseInfo;
     this.apiKey = this.singupResponse.apiKey;
     this.userId = this.singupResponse.userId;
-    console.log("in check method u "+this.userId+" and api "+this.apiKey);
+    //console.log("in check method u "+this.userId+" and api "+this.apiKey);
     if(sessionStorage.getItem("userId") == null){
-      console.log("came to this part");
+    //  console.log("came to this part");
       sessionStorage.setItem("userId",this.userId);
       localStorage.setItem(this.userId,this.apiKey);
     }
