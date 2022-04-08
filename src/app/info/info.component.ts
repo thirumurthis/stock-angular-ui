@@ -17,7 +17,7 @@ export class InfoComponent implements OnInit, OnDestroy {
 
   public stocks : StockInfo = new StockInfo();
   
-  displayedColumns:string[] = ["symbol","companyName","currentPrice","currentInvestedAmount","actualInvestedAmount","difference","profitOrLoss","lastAccessed"]
+  displayedColumns:string[] = ["symbol","currentPrice","currentInvestedAmount","actualInvestedAmount","difference","profitOrLoss"]
   public displaySpinner: boolean = true;
   /*
   displayHeader: any[] = [{"symbol":"Symbol"},
@@ -29,7 +29,7 @@ export class InfoComponent implements OnInit, OnDestroy {
                           {"profitOrLoss":"Profit/Loss"},
                           {"lastAccessed":"Last Accessed"}];
   */
- displayHeader: string[] = ["Symbol","Company Name","Current Price","Current Invested Amount","Actual Invested Amount","Difference","Profit/Loss","Last Accessed"]
+ displayHeader: string[] = ["Symbol","Current Price","Current Invested Amount","Actual Invested Amount","Difference","Profit/Loss"]
   // create the table only for hte stock info details
   //dataSource : any = {};
   public dataSource: MatTableDataSource<StockDetails> = new MatTableDataSource();
@@ -65,6 +65,19 @@ export class InfoComponent implements OnInit, OnDestroy {
       }
     )
   }
+
+  getToolTipData(selectSymbol: string): string {
+
+    if(selectSymbol){
+    //  console.log(selectSymbol);
+     const stock = this.stocks.stockInfo.find(i => i.symbol === selectSymbol);
+    // console.log(JSON.stringify(stock)+" - "+stock?.companyName);
+     //this.toolTipMsg = stock?.companyName;
+     return `${stock?.companyName}`;
+    } else{
+       return "";
+    }
+ }
 
   backToLogin(){
     this.router.navigate(['/login']);

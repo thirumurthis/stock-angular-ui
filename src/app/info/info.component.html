@@ -1,18 +1,21 @@
 <mat-card>
     <mat-card-header>
         <mat-card-title-group>
-            <mat-card-title>
-                Stock Details
-            </mat-card-title>
-            <mat-card-subtitle>The amount invested in stocks and current pricing status</mat-card-subtitle>
+            <mat-card-title>Stock Dashboard</mat-card-title>
+            <mat-card-subtitle>The dashboard providing details on invested amount and current pricing status of stocks</mat-card-subtitle>
         </mat-card-title-group>
-        <div fxFlex></div>
-        <button mat-stroked-button color="primary" matTooltip="To login page" (click)="backToLogin()"> Home </button>
     </mat-card-header>
     <mat-card-content>
+        <div class="button-label">
         <div class="spinner-container" *ngIf="displaySpinner">
             <mat-progress-spinner [diameter]="25"  color="primary" mode="indeterminate"></mat-progress-spinner>
        </div>
+       <div fxFlex ></div>
+       <div class="example-button-row">
+       <button mat-stroked-button color="primary" matTooltip="To login page" (click)="backToLogin()"> Home </button>
+    </div>
+    </div>
+
         <div class="mat-elevation-z7">
             <table mat-table [dataSource]="this.dataSource" matSort multiTemplateDataRows matSortActive="symbol"
                 matSortDirection="asc">
@@ -35,14 +38,23 @@
                     </ng-container>
                 </div>
                 <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
-                <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+                <tr mat-row *matRowDef="let row; columns: displayedColumns;"
+                            (mouseover)="getToolTipData(row.symbol)" 
+                            [matTooltip]="getToolTipData(row.symbol)"
+                            [matTooltipShowDelay]="500"
+                            [matTooltipHideDelay]="500"
+                            [matTooltipPosition]="'right'"></tr>
             </table>
         </div>
     </mat-card-content>
 </mat-card>
 <mat-card>
-    <mat-card-title>Overall Info</mat-card-title>
-    <mat-card-subtitle>The overall stock investment status</mat-card-subtitle>
+    <mat-card-header>
+        <mat-card-title-group>
+            <mat-card-title>Overall Info</mat-card-title>
+            <mat-card-subtitle>The overall stock investment status</mat-card-subtitle>
+        </mat-card-title-group>
+    </mat-card-header>
     <mat-card-content>
         <div class="mat-elevation-z4">
             <table>
@@ -52,12 +64,14 @@
                     <td >Current Market Value</td>
                     <td >Difference</td>
                     <td >Profit/Loss</td>
+                    <td >Last Accessed</td> 
                 </tr>
                 <tr class="mat-cell tbl-row">
                     <td >{{stocks.investedAmount | currency}}</td>
                     <td >{{stocks.currentMarketTotalAmount | currency}}</td>
                     <td >{{stocks.difference | currency}}</td>
                     <td >{{stocks.profitLossStatus.replace('**','').replace('**','')}}</td>
+                    <td >{{stocks.lastAccessed | date:'MM-dd-yy hh:mm'}} </td>
                 </tr>
 
             </table>
