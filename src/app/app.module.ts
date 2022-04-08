@@ -32,6 +32,9 @@ import { StockResultComponent } from './stock-result/stock-result.component';
 import { StockInputComponent } from './stock-input/stock-input.component';
 import {MatSnackBarModule} from '@angular/material/snack-bar';
 import { StockDeleteComponent } from './stock-delete/stock-delete.component';
+import {MatTooltipModule} from '@angular/material/tooltip';
+import {MatDialogModule} from '@angular/material/dialog';
+import { DialogComponent } from './dialog/dialog/dialog.component';
 
 @NgModule({
   declarations: [
@@ -43,7 +46,8 @@ import { StockDeleteComponent } from './stock-delete/stock-delete.component';
     InfoComponent,
     StockResultComponent,
     StockInputComponent,
-    StockDeleteComponent
+    StockDeleteComponent,
+    DialogComponent
   ],
   imports: [
     BrowserModule,
@@ -70,6 +74,8 @@ import { StockDeleteComponent } from './stock-delete/stock-delete.component';
     MatPaginatorModule,
     MatSidenavModule,
     MatSnackBarModule,
+    MatTooltipModule,
+    MatDialogModule,
   ],
   exports: [
     MatProgressBarModule,

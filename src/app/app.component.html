@@ -11,7 +11,17 @@
                 </button>
                 <span>Stock App</span>
                 <span class="spacer"></span>
-                <mat-icon>help</mat-icon>
+                <button mat-icon-button matTooltip="Sample Dashboard View" routerLink="/info" >
+                   <mat-icon class="material-icons-round">dashboard</mat-icon>
+                </button>
+                <span></span>
+                <button mat-icon-button matTooltip="Logout"  (click)="logout()">
+                    <mat-icon>logout</mat-icon>
+                </button>
+                <span></span>
+                <button mat-icon-button matTooltip="click for help"  (click)="openDialog()">
+                    <mat-icon>help</mat-icon>
+                </button>
             </mat-toolbar-row>
         </mat-toolbar>
         <router-outlet></router-outlet>

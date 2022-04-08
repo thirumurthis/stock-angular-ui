@@ -33,7 +33,7 @@ export class LoginService {
     }
 
   signup(model:any): Observable<Signupresponse>{
-    console.log(model);
+    //console.log(model);
     const httpOptions = { headers: new HttpHeaders({ 'Content-Type': 'application/json' }) };
     return this.http.post<Signupresponse>(this.url+'stock-app/signup',model,httpOptions).pipe(
       catchError(err => {
@@ -126,4 +126,23 @@ export class LoginService {
       })
     )
   }
+
+  isLoggedIn():boolean{
+    let token = this.getValueFromSessionStorage("jwt");
+    if(token){
+      return true;
+    }
+    return false;
+  }
+
+  logout(){
+    let userId = this.getValueFromSessionStorage("userId");
+    if(userId)
+        localStorage.removeItem(userId);
+  }
+  private getValueFromSessionStorage(key: string) : string|null{
+    let userId = sessionStorage.getItem("userId")
+    return userId;
+  }
+
 }

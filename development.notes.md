@@ -64,3 +64,16 @@ Note: we can user specific version like 13.0.0-beta.36
 ng add @angular/material@13
 # this also installs the @angular/cdk which is component development kit for material component to work
 ```
+
+### how to route to other components.
+ - From the component ts file, we can inject the Router module and use the roter.navigate.
+ - From the Template or html component file, we can use the routerLink options.
+
+### how to make the selected route highlighted?
+  - in the template html component, we can use the `routerLinkActive="active"`
+
+### using the Router Gaurd, we can use `CanActivate` gaurd
+  - use `$ ng g gaurd auth`, choose the option CanActivate when prompted.
+  - Note: from canActivate() returns true from this gaurd then the route will be enabled.
+    - In our case we can check if the jwt token is available to make sure the user is logged in.
+
