@@ -8,12 +8,15 @@
         </mat-card-title-group>
         <div fxFlex></div>
         <button mat-stroked-button color="primary" matTooltip="To login page" (click)="backToLogin()"> Home </button>
-        
     </mat-card-header>
     <mat-card-content>
-        <div class="mat-elevation-z4">
+        <div class="spinner-container" *ngIf="displaySpinner">
+            <mat-progress-spinner [diameter]="25"  color="primary" mode="indeterminate"></mat-progress-spinner>
+       </div>
+        <div class="mat-elevation-z7">
             <table mat-table [dataSource]="this.dataSource" matSort multiTemplateDataRows matSortActive="symbol"
                 matSortDirection="asc">
+
                 <div *ngFor="let displayedColumn of displayedColumns; let i=index">
                     <ng-container [matColumnDef]="displayedColumn">
                         <th mat-header-cell *matHeaderCellDef mat-sort-header> {{displayHeader[i]}} </th>

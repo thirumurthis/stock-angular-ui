@@ -65,7 +65,7 @@ export class LoginService {
       'Authorization': 'Bearer '+ model.jwtToken
     })}
     //console.log("print header info:- "+httpOptions)
-    debugger
+    //debugger
     return this.http.post<StockInfo>(this.url+'stock/v1/stock-info',model,httpOptions).pipe(
       catchError(err => {
         this.errorHandler.handleError(err);
@@ -75,7 +75,7 @@ export class LoginService {
   } 
 
   getToken(model : any) : Observable<Signupresponse>{
-    debugger
+    //debugger
     const httpOptions = { headers: new HttpHeaders({ 'Content-Type': 'application/json' }) };
     return this.http.post<Signupresponse>(this.url+'stock-app/token',model,httpOptions).pipe(
       catchError(err => {
