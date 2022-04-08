@@ -37,3 +37,17 @@ In Heroku side, create a new app login in. After that updated the deployment to 
   - For some reason, the Chrome browser was not able to connect to github from heroku web page.
   - With IE, i was able to sign up to the github, and provided the repository (stock-angular-ui)
   - currently the manual deployment is selected.
+
+
+### NOTE:
+ - in the package json, be careful an specifying the `node server.js`
+ - I issued that in the build script, and the heroku deployment was running continously. since it was listening to 5000 port.
+- Heroku web interface doesn't provide ways to stop the build we need to use heroku cli
+  - Install the build packages plugin 
+   ```
+    $ heroku plugins:install heroku-builds
+  ``` 
+  - Then use build cancel option
+  ```
+   $ heroku builds:cancel -a stock-app-ui
+  ```
