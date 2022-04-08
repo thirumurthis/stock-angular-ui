@@ -6,6 +6,7 @@ import { Component, OnInit, ViewChild, OnDestroy } from '@angular/core';
 import { catchError, throwError, map, Subscription } from 'rxjs';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
+import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 
 @Component({
   selector: 'app-info',
@@ -17,7 +18,7 @@ export class InfoComponent implements OnInit, OnDestroy {
   public stocks : StockInfo = new StockInfo();
   
   displayedColumns:string[] = ["symbol","companyName","currentPrice","currentInvestedAmount","actualInvestedAmount","difference","profitOrLoss","lastAccessed"]
-
+  public displaySpinner: boolean = true;
   /*
   displayHeader: any[] = [{"symbol":"Symbol"},
                            {"companyName":"Company Name"},
@@ -58,6 +59,7 @@ export class InfoComponent implements OnInit, OnDestroy {
         this.stocks = response;
         this.dataSource = new MatTableDataSource(this.stocks.stockInfo);
         this.dataSource.sort = this.sort;
+        this.displaySpinner =  false;
         //console.log("from the call "+this.dataSource.data)
         //this.router.navigate(['/info'],{state :{stocks:this.stocks}});
       }

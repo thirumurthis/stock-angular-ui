@@ -28,10 +28,12 @@ export class StockResultComponent implements OnInit, AfterViewInit, OnDestroy {
   private tokenSub : Subscription = new Subscription();
   private apiSub : Subscription = new Subscription();
   private stockSub : Subscription = new Subscription();
-
-  displayedColumns:string[] = ["symbol","companyName","currentPrice","currentInvestedAmount","actualInvestedAmount","difference","profitOrLoss","lastAccessed"]
-
-  displayHeader: string[] = ["Symbol","Company Name","Current Price","Current Invested Amount","Actual Invested Amount","Difference","Profit/Loss","Last Accessed"]
+  // Originally used column header
+  //displayedColumns:string[] = ["symbol","companyName","currentPrice","currentInvestedAmount","actualInvestedAmount","difference","profitOrLoss","lastAccessed"]
+  // removed few of them
+  displayedColumns:string[] = ["symbol","stockCount","currentPrice","currentInvestedAmount","actualInvestedAmount","difference","profitOrLoss"]
+  displayHeader: string[] = ["Symbol","# of Stock","Current Price","Current Invested Amount","Actual Invested Amount","Difference","Profit/Loss"]
+ // displayHeader: string[] = ["Symbol","Company Name","Current Price","Current Invested Amount","Actual Invested Amount","Difference","Profit/Loss","Last Accessed"]
   public dataSource: MatTableDataSource<StockDetails> = new MatTableDataSource();
   public stocks : StockInfo = new StockInfo();
   public subForStockPage = new Subscription();
@@ -207,10 +209,15 @@ export class StockResultComponent implements OnInit, AfterViewInit, OnDestroy {
   
     getToolTipData(selectSymbol: string): string {
 
+       if(selectSymbol){
+       //  console.log(selectSymbol);
         const stock = this.stocks.stockInfo.find(i => i.symbol === selectSymbol);
-        //alert("clicked:  "+stock);
+       // console.log(JSON.stringify(stock)+" - "+stock?.companyName);
         this.toolTipMsg = stock?.companyName;
-        return `Title: ${stock?.companyName}`;
+        return `${stock?.companyName}`;
+       } else{
+          return "";
+       }
     }
 
   addStockPath(){

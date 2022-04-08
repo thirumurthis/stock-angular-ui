@@ -35,6 +35,7 @@ import { StockDeleteComponent } from './stock-delete/stock-delete.component';
 import {MatTooltipModule} from '@angular/material/tooltip';
 import {MatDialogModule} from '@angular/material/dialog';
 import { DialogComponent } from './dialog/dialog/dialog.component';
+import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 
 @NgModule({
   declarations: [
@@ -76,6 +77,7 @@ import { DialogComponent } from './dialog/dialog/dialog.component';
     MatSnackBarModule,
     MatTooltipModule,
     MatDialogModule,
+    MatProgressSpinnerModule,
   ],
   exports: [
     MatProgressBarModule,
