@@ -40,8 +40,12 @@
                         </ng-template> 
                         -->
             
-                        <ng-template [ngIf]="displayedColumn === 'sybmol' || displayedColumn === 'stockCount'">
+                        <ng-template [ngIf]="displayedColumn === 'sybmol'" >
                             <td mat-cell *matCellDef="let element" >{{element[displayedColumn]}}</td>
+                        </ng-template>
+
+                        <ng-template [ngIf]="displayedColumn === 'stockCount'" >
+                            <td mat-cell *matCellDef="let element" >{{element[displayedColumn] | number : '1.3-3'}}</td>
                         </ng-template>
                        
                         <ng-template [ngIf]="!(  displayedColumn === 'currentPrice' || displayedColumn === 'currentInvestedAmount'
