@@ -213,7 +213,7 @@ export class StockResultComponent implements OnInit, AfterViewInit, OnDestroy {
        //  console.log(selectSymbol);
         const stock = this.stocks.stockInfo.find(i => i.symbol === selectSymbol);
        // console.log(JSON.stringify(stock)+" - "+stock?.companyName);
-        this.toolTipMsg = stock?.companyName;
+        //this.toolTipMsg = stock?.companyName;
         return `${stock?.companyName}`;
        } else{
           return "";

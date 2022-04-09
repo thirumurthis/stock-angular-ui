@@ -1,3 +1,4 @@
+import { AuthGuard } from './gaurd/auth.guard';
 import { StockDeleteComponent } from './stock-delete/stock-delete.component';
 import { StockInputComponent } from './stock-input/stock-input.component';
 import { StockResultComponent } from './stock-result/stock-result.component';
@@ -15,7 +16,7 @@ const routes: Routes = [
   {path: 'home',component: HomeComponent}, //Note no need for path to start with /
   {path: 'alert',component: AlertComponent},
   {path: 'info',component: InfoComponent},
-  {path: 'stock-info',component: StockResultComponent},
+  {path: 'stock-info',component: StockResultComponent, canActivate:[AuthGuard]},
   {path: 'add-stock',component: StockInputComponent},
   {path: 'delete-stock',component: StockDeleteComponent},
   {path: '404',component: NotFoundComponent}, 

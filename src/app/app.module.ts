@@ -1,3 +1,4 @@
+import { AuthGuard } from './gaurd/auth.guard';
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 
@@ -82,7 +83,7 @@ import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
   exports: [
     MatProgressBarModule,
   ],
-  providers: [],
+  providers: [AuthGuard],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
