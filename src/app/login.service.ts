@@ -145,4 +145,51 @@ export class LoginService {
     return userId;
   }
 
+  addStockFromDialog(model:any):Observable<any>{
+    const httpOptions = { headers : new HttpHeaders({
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer '+ model.data.jwtToken
+    })}
+    debugger;
+    let stockRequest = {"symbol":model.data.symbol,"stockCount":model.data.stockCount,"avgStockPrice":model.data.avgStockPrice};
+    return this.http.post<any>(this.url+'stock/v1/add',stockRequest,httpOptions).pipe(
+      catchError(err => {
+        this.errorHandler.handleError(err);
+        return throwError(()=>new Error("Couldn't add stock info error occurred during submission"))
+      })
+    )
+  }
+
+  /**
+   * This is used by the Dialog from the form
+   */
+  updateStockFromDialog(model:any):Observable<any>{
+    const httpOptions = { headers : new HttpHeaders({
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer '+ model.data.jwtToken
+    })}
+    let stockRequest = [{"symbol":model.data.symbol,"stockCount":model.data.stockCount,"avgStockPrice":model.data.avgStockPrice}];
+    return this.http.put<any>(this.url+'stock/v1/update/stocks',stockRequest,httpOptions).pipe(
+      catchError(err => {
+        this.errorHandler.handleError(err);
+        return throwError(()=>new Error("Couldn't delete stock info error occurred during submission"))
+      })
+    )
+  }
+
+deleteStockFromDialog(model:any):Observable<any>{
+    const httpOptions = { headers : new HttpHeaders({
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer '+ model.data.jwtToken
+    })}
+    let symbol = model.data.symbol;
+    return this.http.delete<any>(this.url+'stock/v1/delete/'+symbol+'/force',httpOptions).pipe(
+      catchError(err => {
+        this.errorHandler.handleError(err);
+        return throwError(()=>new Error("Couldn't delete stock info error occurred during submission"))
+      })
+    )
+  }
+
+
 }

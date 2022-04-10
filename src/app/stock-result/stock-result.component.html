@@ -20,11 +20,16 @@
         </div>
         <div fxFlex></div>
         <div class="example-button-row">
+        <!-- Commented to use a Dialog instead
         <button mat-stroked-button  matTooltip="Click to add stock" (click)="addStockPath()"> Add Stock </button>
         <button mat-stroked-button matTooltip="Click to delete stock" (click)="deleteStock()"> Delete Stock </button>
+        -->
+        <button mat-stroked-button matTooltip="Click to add stock" (click)="openDialog()"> Add Stock </button>
+        <button mat-stroked-button matTooltip="Click to delete stock" (click)="openDeleteSybmolDialog()"> Delete Stock </button>
+ 
         </div>
        </div>
-        <div class="mat-elevation-z8">
+        <div class="mat-elevation-z4">
             <table mat-table [dataSource]="this.dataSource" matSort multiTemplateDataRows matSortActive="symbol"
                 matSortDirection="asc">
                 <div *ngFor="let displayedColumn of displayedColumns; let i=index">
@@ -65,7 +70,7 @@
                             [matTooltipHideDelay]="500"
                             [matTooltipPosition]="'right'"></tr>
             </table>
-            <mat-paginator class="mat-elevation-z8" [pageSize]="pageSize" 
+            <mat-paginator class="mat-elevation-z4" [pageSize]="pageSize" 
                                                     [length]="stocks.stockInfo?.length"
                                                     [pageSizeOptions]="pageSizeOptions"
                                                     showFirstLastButtons

@@ -17,8 +17,8 @@ const routes: Routes = [
   {path: 'alert',component: AlertComponent},
   {path: 'info',component: InfoComponent},
   {path: 'stock-info',component: StockResultComponent, canActivate:[AuthGuard]},
-  {path: 'add-stock',component: StockInputComponent},
-  {path: 'delete-stock',component: StockDeleteComponent},
+  //{path: 'add-stock',component: StockInputComponent}, // currently not used 
+  //{path: 'delete-stock',component: StockDeleteComponent}, // currently not used
   {path: '404',component: NotFoundComponent}, 
   { path: '**', redirectTo: '/404', pathMatch: 'full'}, // in redirect it is required to use /
 ];

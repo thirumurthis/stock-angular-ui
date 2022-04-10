@@ -37,6 +37,8 @@ import {MatTooltipModule} from '@angular/material/tooltip';
 import {MatDialogModule} from '@angular/material/dialog';
 import { DialogComponent } from './dialog/dialog/dialog.component';
 import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
+import { DialogStockEditComponent } from './dialog/dialog-stock-edit/dialog-stock-edit.component';
+import { DialogStockDeleteComponent } from './dialog/dialog-stock-delete/dialog-stock-delete.component';
 
 @NgModule({
   declarations: [
@@ -49,7 +51,9 @@ import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
     StockResultComponent,
     StockInputComponent,
     StockDeleteComponent,
-    DialogComponent
+    DialogComponent,
+    DialogStockEditComponent,
+    DialogStockDeleteComponent
   ],
   imports: [
     BrowserModule,

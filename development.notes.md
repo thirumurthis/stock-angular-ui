@@ -89,3 +89,16 @@ ng add @angular/material@13
   ```
    <input matInput placeholder="Symbol" [(ngModel)]="sybmol" name="symbol" (ngModelChange)="sybmol= $event.toUpperCase()" required>
   ```
+ ### How to reload the component when the dialog is closed.
+   - First created a component for the dialog
+   - Then using the Mat Dialog module, then use open to open the dialog.
+   - use the close event to handle the close event to reload.
+   - below code reloads the image.
+   ```
+     let currentUrl = this.router.url;
+      this.router.routeReuseStrategy.shouldReuseRoute = () => false;
+      this.router.onSameUrlNavigation = 'reload';
+      this.router.navigate([currentUrl],{ state: { msg: message }});
+   ```
+ ###### In this project there are few typscript class are not being used
+  - the stock-input and stock-delete components can be removed latter. - udpated April/9/2022

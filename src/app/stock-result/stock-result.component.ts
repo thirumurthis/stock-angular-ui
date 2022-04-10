@@ -1,3 +1,6 @@
+import { DialogStockDeleteComponent } from './../dialog/dialog-stock-delete/dialog-stock-delete.component';
+import { MatDialog } from '@angular/material/dialog';
+import { DialogStockEditComponent } from './../dialog/dialog-stock-edit/dialog-stock-edit.component';
 import { StockInfo } from './../data/stock-info';
 import { MatTableDataSource } from '@angular/material/table';
 import { ErrorHandlerService } from './../shared/error-handler.service';
@@ -46,7 +49,9 @@ export class StockResultComponent implements OnInit, AfterViewInit, OnDestroy {
   constructor(private router: Router,
               private loginService: LoginService, 
               private errorHandler : ErrorHandlerService,
-              private snackbar : MatSnackBar) { 
+              private snackbar : MatSnackBar,
+              private editStockDialog: MatDialog,
+              private deleteStockDialog : MatDialog) { 
     this.msg = this.router.getCurrentNavigation()?.extras.state;
     console.log("message from the other route:- "+this.msg)
     if(this.msg){
@@ -76,6 +81,7 @@ export class StockResultComponent implements OnInit, AfterViewInit, OnDestroy {
     this.apiSub.unsubscribe();
     this.stockSub.unsubscribe();
     this.subForStockPage.unsubscribe();
+    this.subForDeleteDialog.unsubscribe();
   }
 
   @ViewChild(MatSort, {static: true}) sort?: MatSort; // initialzing the component is an antipattern
@@ -227,4 +233,131 @@ export class StockResultComponent implements OnInit, AfterViewInit, OnDestroy {
   deleteStock(){
     this.router.navigate(['/delete-stock']);
   }
+  
+  public subForDialogAdd : Subscription = new Subscription();
+  public subForDialogUpdate : Subscription = new Subscription();
+  public closeDialog : boolean = false;
+  openDialog(): void {
+    const dialogRef = this.editStockDialog.open(DialogStockEditComponent, {
+      backdropClass: 'custom-dialog-backdrop-class',
+      panelClass: 'custom-dialog-panel-class',
+      data: { "userId": this.userId, "apiKey": this.apiKey, "jwtToken": this.jwtToken }
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result.event == 'add') {
+       this.subForDialogAdd= this.loginService.addStockFromDialog(result)
+          .pipe(
+            catchError(err => {
+              //console.log('Handling error locally and rethrowing it...', err);
+              this.errorHandler.handleError(err);
+              return throwError(() => new Error('Error occurred during submission'));
+            }))
+          .subscribe(
+            response => {
+              //console.log(" MESSAGE FROM the add stock flow:- "+response);
+              //debugger;
+              if (response.status){
+                //debugger;
+                //this.router.navigate(['stock-info'], { state: { msg: response.status } })
+                // below is another apporach to reload the component, but this reloads from the login
+                //this.reloadCurrentRoute(response.status);
+                this.reloadComponent(response.status);
+                // below is an apporach to reload the page
+                // .then(() => {
+                //  window.location.reload();
+                //})
+              } else {
+                this.router.navigate(['alert'])
+              }
+            });
+      }else if (result.event == 'update') {
+        this.subForDialogUpdate = this.loginService.updateStockFromDialog(result)
+          .pipe(
+            catchError(err => {
+              //console.log('Handling error locally and rethrowing it...', err);
+              this.errorHandler.handleError(err);
+              return throwError(() => new Error('Error occurred during submission'));
+            }))
+          .subscribe(
+            response => {
+              debugger;
+              if (response.status) {
+                //this.router.navigate(['stock-info'], { state: { msg: response.status } })
+                //this.reloadCurrentRoute(response.status);
+                this.reloadComponent(response.status);
+                // .then(() => {
+                //  window.location.reload();
+                //})
+              } else {
+                this.router.navigate(['alert'])
+              }
+            });
+      }
+    });
+  }
+
+  /*
+   This is an example code demonstrating the option to release the page
+   This can be done using window.location.reload(), but this 
+   currently navigates to the login page in this case 
+    NOTE: THIS IS NOT USED IN THIS CODE CURRENTLY
+  */
+  reloadCurrentRoute(message:string) {
+    let currentUrl = this.router.url;
+    this.router.navigateByUrl('/', {skipLocationChange: true}).then(() => {
+        this.router.navigate([currentUrl],{ state: { msg: message }});
+    });
+}
+
+/*
+Below is he way to reload the content
+*/
+reloadComponent(message : string) {
+  let currentUrl = this.router.url;
+  this.router.routeReuseStrategy.shouldReuseRoute = () => false;
+  this.router.onSameUrlNavigation = 'reload';
+  this.router.navigate([currentUrl],{ state: { msg: message }});
+  }
+
+  public sybmolList : string[] = [];
+  getSymbolList():string[]{
+    let result : string[] =[];
+    if(this.stocks){
+      if(this.stocks.stockInfo){
+         result = this.stocks.stockInfo
+                      .reduce((res:string[], prop) => (prop.symbol && res.push(prop.symbol), res), []);
+      }
+    }
+    return result;
+  }
+
+  public subForDeleteDialog : Subscription = new Subscription();
+  openDeleteSybmolDialog(): void {
+    debugger;
+    const dialogDeleteRef = this.deleteStockDialog.open(DialogStockDeleteComponent, {
+      data: { "userId": this.userId, "apiKey": this.apiKey, "jwtToken": this.jwtToken, symbols:this.getSymbolList() }
+    });
+
+    dialogDeleteRef.afterClosed().subscribe(result => {
+      if (result.event == 'delete') {
+       this.subForDeleteDialog= this.loginService.deleteStockFromDialog(result)
+          .pipe(
+            catchError(err => {
+              this.errorHandler.handleError(err);
+              return throwError(() => new Error('Error occurred during submission'));
+            }))
+          .subscribe(
+            response => {
+              debugger;
+              if (response.status){
+                this.reloadComponent(response.status);
+              } else {
+                this.router.navigate(['alert'])
+              }
+            });
+      }
+    });
+  }
+    
 }
