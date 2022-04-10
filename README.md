@@ -37,22 +37,22 @@ To get more help on the Angular CLI use `ng help` or go check out the [Angular C
 Hosted url (link)[https://stock-app-ui.herokuapp.com/] 
 
 #### Simple login page, with sign up option.
+- Provide user name and password, click sign up for the first time use of this application. 
+- The next time with username nad password click login
 ![image](https://user-images.githubusercontent.com/6425536/161881019-f0e2eeaf-65b5-422f-bd99-bb639de9a181.png)
 
 #### The dashboard looks something like below 
-![image](https://user-images.githubusercontent.com/6425536/161881355-91ad568b-53ea-47a8-96fe-7bf5214237b9.png)
+![image](https://user-images.githubusercontent.com/6425536/162598807-d3f74faa-c3fc-42c9-abac-260a236870f8.png)
 
 #### User can add/ update and delete stock based on the sybmols (only applicable to USA stocks)
- - once logged in should see the option to add and delete the stock
-![image](https://user-images.githubusercontent.com/6425536/161881540-0e4d2f22-14fb-4c3d-94a5-7e81e7992792.png)
-
-#### Add/Update Stock screen 
- ![image](https://user-images.githubusercontent.com/6425536/161881675-345b2d43-192b-41f3-9980-d9c599c0f50b.png)
+  - once logged in should see the option to add and delete the stock
+![image](https://user-images.githubusercontent.com/6425536/162598881-2000ae95-ca4f-4806-baf7-47e651ae0c63.png)
 
 #### Delete Stock screen
-![image](https://user-images.githubusercontent.com/6425536/161881756-1314fd28-2820-44db-bab5-2e5fe73cffe2.png)
+![image](https://user-images.githubusercontent.com/6425536/162598898-0441245b-0c44-43d8-970b-098d8ed5489b.png)
 
-#### Add/update stock status with MatSnackBar component
-![image](https://user-images.githubusercontent.com/6425536/161881957-68acb859-3c35-4a18-9c59-309863dff839.png)
+#### Add/update or delete stock with MatSnackBar component display the status
+![image](https://user-images.githubusercontent.com/6425536/162598933-6bf35e5f-dda4-4544-9218-b21a13a5f15d.png)
+
 
 
