@@ -76,4 +76,29 @@ ng add @angular/material@13
   - use `$ ng g gaurd auth`, choose the option CanActivate when prompted.
   - Note: from canActivate() returns true from this gaurd then the route will be enabled.
     - In our case we can check if the jwt token is available to make sure the user is logged in.
+  - The gaurds needs to be implemented for a route and registed. (gaurds are like service)
+  - We need to register the service in the provided array
+      - Udpate the `app.modules.ts` providers with the create auth gaurd
+  - Apply the gaurd to route. in `app-routing.module.ts` update the canActivate gaurd to specific route
+    - in this case `  {path: 'stock-info',component: StockResultComponent, canActivate:[AuthGuard]},`
+    - The above routing means we can have multiple gaurd before activiating that route.
+  - Gaurd is used included for the route, once that Gaurd is validated the route will rendered
 
+  ### How to make the input to type upper case 
+  - we need to use this event to uppercase, and set to the ngModel two way bind value directly
+  ```
+   <input matInput placeholder="Symbol" [(ngModel)]="sybmol" name="symbol" (ngModelChange)="sybmol= $event.toUpperCase()" required>
+  ```
+ ### How to reload the component when the dialog is closed.
+   - First created a component for the dialog
+   - Then using the Mat Dialog module, then use open to open the dialog.
+   - use the close event to handle the close event to reload.
+   - below code reloads the image.
+   ```
+     let currentUrl = this.router.url;
+      this.router.routeReuseStrategy.shouldReuseRoute = () => false;
+      this.router.onSameUrlNavigation = 'reload';
+      this.router.navigate([currentUrl],{ state: { msg: message }});
+   ```
+ ###### In this project there are few typscript class are not being used
+  - the stock-input and stock-delete components can be removed latter. - udpated April/9/2022

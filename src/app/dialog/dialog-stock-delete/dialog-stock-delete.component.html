@@ -1,0 +1,19 @@
+<h1 mat-dialog-title>Delete Stock</h1>
+<div mat-dialog-content>
+    <mat-error *ngIf="!validInput">
+        Select the stock symbol from the dropdown list
+      </mat-error>
+    <mat-form-field>
+        <mat-label>Select Stock Symbol</mat-label>
+        <mat-select [(ngModel)]="selectedSymbol">
+          <mat-option *ngFor="let item of symbols" [value]="item">
+            {{item}}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+</div>
+<div mat-dialog-actions>
+    <div fxFlex></div>
+   <button mat-raised-button (click)="closeDialog('delete')">Delete</button>
+  <button mat-raised-button (click)="closeDialog('close')">Close</button>
+</div>

@@ -1,10 +1,33 @@
 <h1 mat-dialog-title>Stock App</h1>
-<div mat-dialog-content>This is a simple Stock App dashboard. Purely for personal use. 
-    <br>The dashboard lists stocks latest price when stock added to the list with the count and average price.
-    <br>This app doesn't track stock price in real time.
-    <br>Don't provide any personal or sensitive data to this app.
+<div mat-dialog-content>
+  <mat-card class="mat-elevation-z4">
+    <mat-card-subtitle>
+    About - Why this app?
+    <ul>
+      <li>This is a simple Stock App dashboard.</li>
+      <li>Developed and hosted for personal use.</li>
+      <li>This app doesn't track stock price in real time.</li>  
+      <li>Don't provide any personal or sensitive data to this app.</li>
+   </ul>
+  </mat-card-subtitle>
+  <mat-card-content>
+    What this app does?
+    <ul>
+      <li>This app displays a dashboard for Stocks listed in US Stock Exchange using ticker symbol.</li>
+      <li>This app requires stock ticker symbol, number of stocks and average price it was purchased for.</li>
+      <li>The INFO icon on the tool bar displays the sample dashboard which doesn't require login</li>
+    </ul>
+    How to use?
+    <ul>
+      <li>To access the app first enter User Name and Password then click Sign Up button.</li>
+      <li>Once logged in, use Add Stock button to add stock symbol, number of stock and average price.</li>
+      <li>Once added the dashboard will start providing the metrics.</li>
+    </ul>
+    <div class="example-button-row">Developer contact <a mat-stroked-button href="https://www.linkedin.com/in/thirumurthis/" target="_blank">Link</a></div>
+  </mat-card-content>
+ </mat-card>
 </div>
-
 <div mat-dialog-actions>
-  <button mat-button mat-dialog-close>Close</button>
+  <div fxFlex></div>
+  <button mat-stroked-button mat-dialog-close>Close</button>
 </div>

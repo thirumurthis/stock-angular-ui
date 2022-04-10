@@ -13,7 +13,7 @@
           The stock count and stock price should be greater than 0
         </mat-error>
         <mat-form-field>
-          <input matInput placeholder="Symbol" [(ngModel)]="sybmol" name="symbol" required>
+          <input matInput placeholder="Symbol" [(ngModel)]="sybmol" name="symbol" (ngModelChange)="sybmol= $event.toUpperCase()" required>
           <mat-error>
             Please provide the Symbol of stock
           </mat-error>
