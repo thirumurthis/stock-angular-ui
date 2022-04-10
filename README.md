@@ -33,13 +33,12 @@ To get more help on the Angular CLI use `ng help` or go check out the [Angular C
 ### This doesn't have any advanced security, don't use any personal information.
 
 #### This is a simple angular material view Stock Dashboard
-
-Hosted url (link)[https://stock-app-ui.herokuapp.com/] 
+ - The application hosted url [link](https://stock-app-ui.herokuapp.com/)
 
 #### Simple login page, with sign up option.
 - Provide user name and password, click sign up for the first time use of this application. 
 - The next time with username nad password click login
-![image](https://user-images.githubusercontent.com/6425536/161881019-f0e2eeaf-65b5-422f-bd99-bb639de9a181.png)
+![image](https://user-images.githubusercontent.com/6425536/162598995-e24e978f-a06d-4f6b-8b03-f969196f5e1c.png)
 
 #### The dashboard looks something like below 
 ![image](https://user-images.githubusercontent.com/6425536/162598807-d3f74faa-c3fc-42c9-abac-260a236870f8.png)
